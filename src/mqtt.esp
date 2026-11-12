@@ -411,7 +411,7 @@ void getUserList()
 {
 	DynamicJsonDocument root(512);
 	JsonArray users = root.createNestedArray("list");
-	Dir dir = SPIFFS.openDir("/P/");
+	Dir dir = LittleFS.openDir("/P/");
 #ifdef DEBUG
 	Serial.println("[ INFO ] getUserList");
 #endif
@@ -421,7 +421,7 @@ void getUserList()
 		String uid = dir.fileName();
 		uid.remove(0, 3);
 		item["uid"] = uid;
-		File f = SPIFFS.open(dir.fileName(), "r");
+		File f = LittleFS.open(dir.fileName(), "r");
 		size_t size = f.size();
 		std::unique_ptr<char[]> buf(new char[size]);
 		f.readBytes(buf.get(), size);
@@ -436,12 +436,12 @@ void getUserList()
 
 void deleteAllUserFiles()
 {
-	Dir dir = SPIFFS.openDir("/P/");
+	Dir dir = LittleFS.openDir("/P/");
 	while (dir.next())
 	{
 		String uid = dir.fileName();
 		uid.remove(0, 3);
-		SPIFFS.remove(dir.fileName());
+		LittleFS.remove(dir.fileName());
 	}
 }
 
@@ -450,7 +450,7 @@ void deleteUserID(const char *uid)
 	// only do this if a user id has been provided
 	if (uid)
 	{
-		Dir dir = SPIFFS.openDir("/P/");
+		Dir dir = LittleFS.openDir("/P/");
 		while (dir.next())
 		{
 			String user_id = dir.fileName();
@@ -458,7 +458,7 @@ void deleteUserID(const char *uid)
 			user_id.remove(0, 3);
 			if (myuid == user_id)
 			{
-				SPIFFS.remove(dir.fileName());
+				LittleFS.remove(dir.fileName());
 			}
 		}
 	}
@@ -640,7 +640,7 @@ void processMqttMessage(MqttMessage *incomingMessage)
 		const char *uid = incomingMessage->uid;
 		String filename = "/P/";
 		filename += uid;
-		File f = SPIFFS.open(filename, "w+");
+		File f = LittleFS.open(filename, "w+");
 		// Check if we created the file
 		if (f)
 		{
@@ -661,7 +661,7 @@ void processMqttMessage(MqttMessage *incomingMessage)
 #ifdef DEBUG
 		Serial.println("[ INFO ] Get configuration");
 #endif
-		File f = SPIFFS.open("/config.json", "r");
+		File f = LittleFS.open("/config.json", "r");
 		char *buf;
 		if (f)
 		{
@@ -696,7 +696,7 @@ void processMqttMessage(MqttMessage *incomingMessage)
 #endif
 			return;
 		}
-		File f = SPIFFS.open("/config.json", "w");
+		File f = LittleFS.open("/config.json", "w");
 		if (f)
 		{
 			serializeJsonPretty(mqttIncomingJson["configfile"], f);

@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [gea] - 2026-11-12
+- [firmware] update to esp8266@2.6.3, arduino framework 2.7.4
+- [firmware] replace SSPIFS by LITTLEFS
+- [firmware] update libraries
+
+
 ## [2.0.0] - 2024-11-02
 
 ### Bugfixes
