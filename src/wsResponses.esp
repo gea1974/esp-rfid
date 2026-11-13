@@ -4,7 +4,7 @@ void ICACHE_FLASH_ATTR sendUserList(int page, AsyncWebSocketClient *client)
 	root["command"] = "userlist";
 	root["page"] = page;
 	JsonArray users = root.createNestedArray("list");
-	Dir dir = LittleFS.openDir("/P/");
+	Dir dir = SPIFFS.openDir("/P/");
 	int first = (page - 1) * 10;
 	int last = page * 10;
 	int i = 0;
@@ -16,7 +16,7 @@ void ICACHE_FLASH_ATTR sendUserList(int page, AsyncWebSocketClient *client)
 			String uid = dir.fileName();
 			uid.remove(0, 3);
 			item["uid"] = uid;
-			File f = LittleFS.open(dir.fileName(), "r");
+			File f = SPIFFS.open(dir.fileName(), "r");
 			size_t size = f.size();
 			std::unique_ptr<char[]> buf(new char[size]);
 			f.readBytes(buf.get(), size);
@@ -76,7 +76,7 @@ void ICACHE_FLASH_ATTR sendStatus(AsyncWebSocketClient *client)
 {
 	struct ip_info info;
 	FSInfo fsinfo;
-	if (!LittleFS.info(fsinfo))
+	if (!SPIFFS.info(fsinfo))
 	{
 #ifdef DEBUG
 		Serial.print(F("[ WARN ] Error getting info on SPIFFS"));

@@ -62,7 +62,7 @@ void wiegandRead()
 			Serial.println(uid);
 #endif
 
-			File f = LittleFS.open("/P/" + uid, "r");
+			File f = SPIFFS.open("/P/" + uid, "r");
 			// user exists, we should wait for pincode
 			if (f)
 			{
@@ -336,7 +336,7 @@ void rfidProcess()
 	}
 
 	/* Each user has a file named after the RFID UID */
-	File f = LittleFS.open("/P/" + uid, "r");
+	File f = SPIFFS.open("/P/" + uid, "r");
 
 	/*
 	 *  If the file was not found then this is an unknown user, so no more
@@ -347,7 +347,7 @@ void rfidProcess()
 	if (!f)
 	{
 		/* Test to see if there was a uid in v1 format */
-		f = LittleFS.open("/P/" + v1uid, "r");
+		f = SPIFFS.open("/P/" + v1uid, "r");
 		if (!f)
 		{
 			processingState = unknown;

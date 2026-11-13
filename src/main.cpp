@@ -30,7 +30,6 @@ SOFTWARE.
 #include <ESP8266mDNS.h>
 #include <ArduinoJson.h>
 #include <FS.h>
-#include <LittleFS.h>
 #include <ESPAsyncTCP.h>
 #include <ESPAsyncWebServer.h>
 #include <TimeLib.h>
@@ -153,9 +152,9 @@ void ICACHE_FLASH_ATTR setup()
 	}
 #endif
 
-	if (!LittleFS.begin())
+	if (!SPIFFS.begin())
 	{
-		if (LittleFS.format())
+		if (SPIFFS.format())
 		{
 			writeEvent("WARN", "sys", "Filesystem formatted", "");
 		}
@@ -272,9 +271,9 @@ void ICACHE_RAM_ATTR loop()
 #ifdef DEBUG
 		Serial.println(F("[ WARN ] Factory reset initiated..."));
 #endif
-		LittleFS.end();
+		SPIFFS.end();
 		ws.enable(false);
-		LittleFS.format();
+		SPIFFS.format();
 		ESP.restart();
 	}
 
@@ -287,7 +286,7 @@ void ICACHE_RAM_ATTR loop()
 	if (shouldReboot)
 	{
 		writeEvent("INFO", "sys", "System is going to reboot", "");
-		LittleFS.end();
+		SPIFFS.end();
 		ESP.restart();
 	}
 
