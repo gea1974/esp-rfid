@@ -47,6 +47,7 @@ var config = {
         "ledwaitingpin" : 255,
         "openlockpin": 255,
         "doorbellpin": 255,
+        "doorbellpininversed": 0,
         "accessdeniedpin": 255,
         "useridstoragemode": "hexadecimal",
         "requirepincodeafterrfid": 1,
@@ -210,6 +211,7 @@ function listhardware() {
   document.getElementById("doorstatpin").value = config.hardware.doorstatpin;
   document.getElementById("maxOpenDoorTime").value = config.hardware.maxOpenDoorTime;
   document.getElementById("doorbellpin").value = config.hardware.doorbellpin;
+  document.getElementById("doorbellpininversed").checked = config.hardware.doorbellpininversed;
   document.getElementById("openlockpin").value = config.hardware.openlockpin;
   document.getElementById("accessdeniedpin").value = config.hardware.accessdeniedpin;
   document.getElementById("useridstoragemode").value = config.hardware.useridstoragemode;
@@ -289,6 +291,7 @@ function savehardware() {
   config.hardware.doorstatpin = parseInt(document.getElementById("doorstatpin").value);
   config.hardware.maxOpenDoorTime = parseInt(document.getElementById("maxOpenDoorTime").value);
   config.hardware.doorbellpin = parseInt(document.getElementById("doorbellpin").value);
+  config.hardware.doorbellpininversed = document.getElementById("doorbellpininversed").checked;
   config.hardware.openlockpin = parseInt(document.getElementById("openlockpin").value);
   config.hardware.accessdeniedpin = parseInt(document.getElementById("accessdeniedpin").value);
   config.hardware.beeperpin = parseInt(document.getElementById("beeperpin").value);
@@ -1299,7 +1302,7 @@ function initUserTable() {
           },
           {
             "name": "acctype",
-            "title": "Access Door " + config.hardware.doorname || "1",
+            "title": "Access " + config.hardware.doorname || "1",
             "breakpoints": "xs",
             "parser": function(value) {
               if (value === 1) {
@@ -1320,7 +1323,7 @@ function initUserTable() {
           },
           {
             "name": "acctype2",
-            "title": "Access Door " + config.hardware.relay2?.doorname || "2",
+            "title": "Access " + config.hardware.relay2?.doorname || "2",
             "breakpoints": "xs",
             "visible": false,
             "parser": function(value) {
@@ -1342,7 +1345,7 @@ function initUserTable() {
           },
           {
             "name": "acctype3",
-            "title": "Access Door " + config.hardware.relay3?.doorname || "3",
+            "title": "Access " + config.hardware.relay3?.doorname || "3",
             "breakpoints": "xs",
             "visible": false,
             "parser": function(value) {
@@ -1364,7 +1367,7 @@ function initUserTable() {
           },
           {
             "name": "acctype4",
-            "title": "Access Door " + config.hardware.relay4?.doorname || "4",
+            "title": "Access " + config.hardware.relay4?.doorname || "4",
             "breakpoints": "xs",
             "visible": false,
             "parser": function(value) {

@@ -63,6 +63,10 @@ bool ICACHE_FLASH_ATTR loadConfiguration(Config &config)
 			pinMode(config.doorbellpin, INPUT);
 		}
 	}
+	if (hardware.containsKey("doorbellpininversed"))
+	{
+		config.doorbellpininversed = hardware["doorbellpininversed"];
+	}
 
 	if (hardware.containsKey("accessdeniedpin"))
 	{
