@@ -216,7 +216,7 @@ bool ICACHE_FLASH_ATTR loadConfiguration(Config &config)
 
 	config.relayPin[0] = hardware["rpin"];
 	pinMode(config.relayPin[0], OUTPUT);
-	digitalWrite(config.relayPin[0], !config.relayType[0]);
+	if (config.relayPin[0] != 255) digitalWrite(config.relayPin[0], !config.relayType[0]);
 
 	for (int i = 1; i < config.numRelays; i++)
 	{
@@ -230,7 +230,7 @@ bool ICACHE_FLASH_ATTR loadConfiguration(Config &config)
 			config.doorName[i]= strdup(relay["doorname"]);
 		}
 		pinMode(config.relayPin[i], OUTPUT);
-		digitalWrite(config.relayPin[i], !config.relayType[i]);
+		if (config.relayPin[i] != 255) digitalWrite(config.relayPin[i], !config.relayType[i]);
 	}
 
 	if (network.containsKey("ssid"))

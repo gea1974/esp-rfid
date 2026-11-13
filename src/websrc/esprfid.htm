@@ -412,7 +412,7 @@
 
     <div id=relayformparent >
      <div id=relayform>
-        <div id=relaytitle>Relay 1 Settings</div><br><br>
+        <br><div id=relaytitle>Relay 1 Settings</div><br>
         <div class="row form-group">
         <label class="col-xs-3">Relay Type<i style="margin-left: 10px;" class="glyphicon glyphicon-info-sign" aria-hidden="true" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="Depending on your electrical setup, you can choose the relay type"></i></label>
         <span class="col-xs-9 col-md-5">
@@ -426,6 +426,7 @@
         <label class="col-xs-3">Relay Pin<i style="margin-left: 10px;" class="glyphicon glyphicon-info-sign" aria-hidden="true" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="Choose which ESP port is connected to your relay"></i></label>
         <span class="col-xs-6 col-md-5">
                 <select class="form-control input-sm" id="gpiorly">
+                    <option value="255">None</option>
                     <option value="0">GPIO-0</option>
                     <option value="1">GPIO-1</option>
                     <option value="2">GPIO-2</option>
@@ -448,6 +449,7 @@
             <select class="form-control input-sm" id="lockType" onchange="handleLock(1);">
                 <option selected="selected" value="0">Momentary</option>
                 <option value="1">Continuous</option>
+                <option value="2">Switch</option>
             </select>
         </span>
       </div>
@@ -1010,7 +1012,10 @@
                                 <option value="5">On Weekends</option>
                                 <option value="6">On Weekdays</option>
                                 -->
+                                <option value="10">Lock</option>
+                                <option value="11">Unlock</option>
                                 <option value="0">Disabled</option>
+                                <option value="90">User</option>
                                 <option value="99">Admin</option>
                             </select>
                         </div>

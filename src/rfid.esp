@@ -411,7 +411,7 @@ void rfidProcess()
 	Serial.print("'");
 #endif
 
-	if (accountType == ACCESS_GRANTED)
+	if ( (accountType == ACCESS_GRANTED) || (accountType == ACCESS_USER) || (accountType == ACCESS_LOCK) || (accountType == ACCESS_LOCK) )
 	{
 		/*
 		 *  Normal user - relay but no admin access
@@ -464,7 +464,8 @@ void rfidProcess()
 			}
 
 			// Enable activation if permissions are correct
-			activateRelay[currentRelay] = (accountTypes[currentRelay] == ACCESS_GRANTED);
+			activateRelay[currentRelay] = (accountTypes[currentRelay] == ACCESS_GRANTED) || (accountTypes[currentRelay] == ACCESS_UNLOCK);
+			deactivateRelay[currentRelay] = (accountTypes[currentRelay] == ACCESS_LOCK);
 
 			// ...except Admin, which always activates everything
 			if (processingState == validAdmin)

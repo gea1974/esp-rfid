@@ -360,8 +360,20 @@ void mqttPublishAccess(time_t accesstime, String const &isknown, int types[MAX_N
 		case 1:
 			access.add("Always");
 			break;
+		case 10:
+			access.add("Lock");
+			break;
+		case 11:
+			access.add("Unlock");
+			break;
+		case 90:
+			access.add("User");
+			break;
 		case 99:
 			access.add("Admin");
+			break;
+		default:
+			access.add("Unknown");
 			break;
 		}
 		doorNames.add(config.doorName[i]);

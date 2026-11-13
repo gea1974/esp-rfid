@@ -1217,7 +1217,7 @@ function initLatestLogTable() {
           "breakpoints": "xs sm",
           "parser": function(value) {
             if (value === 1) {
-              return "Always";
+              return "Access";
             } else if (value === 99) {
               return "Admin";
             } else if (value === 0) {
@@ -1279,6 +1279,12 @@ function initUserTable() {
             "parser": function(value) {
               if (value === 1) {
                 return "Always";
+              } else if (value === 90) {
+                return "User";
+              } else if (value === 10) {
+                return "Lock";
+              } else if (value === 11) {
+                return "Unock";
               } else if (value === 99) {
                 return "Admin";
               } else if (value === 0) {
@@ -1295,6 +1301,12 @@ function initUserTable() {
             "parser": function(value) {
               if (value === 1) {
                 return "Always";
+              } else if (value === 90) {
+                return "User";
+              } else if (value === 10) {
+                return "Lock";
+              } else if (value === 11) {
+                return "Unock";
               } else if (value === 99) {
                 return "Admin";
               } else if (value === 0) {
@@ -1311,6 +1323,12 @@ function initUserTable() {
             "parser": function(value) {
               if (value === 1) {
                 return "Always";
+              } else if (value === 90) {
+                return "User";
+//              } else if (value === 10) {
+//                return "Lock";
+//              } else if (value === 11) {
+//                return "Unock";
               } else if (value === 99) {
                 return "Admin";
               } else if (value === 0) {
@@ -1327,6 +1345,12 @@ function initUserTable() {
             "parser": function(value) {
               if (value === 1) {
                 return "Always";
+              } else if (value === 90) {
+                return "User";
+//              } else if (value === 10) {
+//                return "Lock";
+//              } else if (value === 11) {
+//                return "Unock";
               } else if (value === 99) {
                 return "Admin";
               } else if (value === 0) {
@@ -1389,6 +1413,9 @@ function initUserTable() {
               if (xnum===3) xval = values.acctype3;
               if (xnum===4) xval = values.acctype4;
               if (xval === "Always")  return 1;
+              if (xval === "Lock")  return 10;
+              if (xval === "Unlock")  return 11;
+              if (xval === "User")  return 90;
               if (xval === "Admin")  return 99;
               if (xval === "Disabled") return 0;
             }
@@ -1869,8 +1896,8 @@ $(".noimp").on("click", function() {
 window.FooTable.MyFiltering = window.FooTable.Filtering.extend({
   construct: function(instance) {
     this._super(instance);
-    this.acctypes = ["1", "99", "0"];
-    this.acctypesstr = ["Always", "Admin", "Disabled"];
+    this.acctypes = ["1", "10", "11", "90", "99", "0"];
+    this.acctypesstr = ["Always", "Lock", "Unlock", "User", "Admin", "Disabled"];
     this.def = config.hardware.doorname ? "Access to " + config.hardware.doorname : "Access Type";
     this.$acctype = null;
   },

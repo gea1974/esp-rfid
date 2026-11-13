@@ -16,6 +16,9 @@
 // user related numbers
 
 #define ACCESS_GRANTED 1
+#define ACCESS_LOCK 10
+#define ACCESS_UNLOCK 11
+#define ACCESS_USER 90
 #define ACCESS_ADMIN 99
 #define ACCESS_DENIED 0
 
@@ -35,3 +38,4 @@
 
 #define LOCKTYPE_MOMENTARY 0
 #define LOCKTYPE_CONTINUOUS 1
+#define LOCKTYPE_SWITCH 2
