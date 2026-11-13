@@ -176,7 +176,7 @@ void ICACHE_FLASH_ATTR setup()
 	writeEvent("INFO", "sys", "System setup completed, running", "");
 }
 
-void ICACHE_RAM_ATTR loop()
+void loop()
 {
 	currentMillis = millis();
 	deltaTime = currentMillis - previousLoopMillis;
@@ -224,6 +224,8 @@ void ICACHE_RAM_ATTR loop()
 						#endif
 					if (config.relayPin[currentRelay] != 255) digitalWrite(config.relayPin[currentRelay], config.relayType[currentRelay]);
 					stateRelay[currentRelay] =  true;
+
+					mqttPublishRelayCmd(currentRelay+1,"UNLOCK");
 				}
 				else // currently ON, need to switch OFF
 				{
@@ -235,6 +237,8 @@ void ICACHE_RAM_ATTR loop()
 						#endif
 					if (config.relayPin[currentRelay] != 255) digitalWrite(config.relayPin[currentRelay], !config.relayType[currentRelay]);
 					stateRelay[currentRelay] =  false;
+
+					mqttPublishRelayCmd(currentRelay+1,"LOCK");
 				}
 				activateRelay[currentRelay] = false;
 			}
@@ -255,6 +259,7 @@ void ICACHE_RAM_ATTR loop()
 				previousMillis = millis();
 				activateRelay[currentRelay] = false;
 				deactivateRelay[currentRelay] = true;
+				mqttPublishRelayCmd(currentRelay+1,"UNLOCK");
 			}
 			else if ((currentMillis - previousMillis >= config.activateTime[currentRelay]) && (deactivateRelay[currentRelay]))
 			{
@@ -271,13 +276,13 @@ void ICACHE_RAM_ATTR loop()
 				if (config.relayPin[currentRelay] != 255) digitalWrite(config.relayPin[currentRelay], !config.relayType[currentRelay]);
 				stateRelay[currentRelay] =  false;
 				deactivateRelay[currentRelay] = false;
+				mqttPublishRelayCmd(currentRelay+1,"LOCK");
 			}
 		}
-		if (config.lockType[currentRelay] == LOCKTYPE_SWITCH) // switched relay mode
+		else if (config.lockType[currentRelay] == LOCKTYPE_SWITCH) // Momentary relay mode
 		{
 			if (activateRelay[currentRelay])
 			{
-
 				mqttPublishIo("lock" + String(currentRelay), "UNLOCKED");
 				#ifdef DEBUG
 								Serial.print("mili : ");
@@ -287,19 +292,20 @@ void ICACHE_RAM_ATTR loop()
 				if (config.relayPin[currentRelay] != 255) digitalWrite(config.relayPin[currentRelay], config.relayType[currentRelay]);
 				stateRelay[currentRelay] =  true;
 				activateRelay[currentRelay] = false;
+				mqttPublishRelayCmd(currentRelay+1,"UNLOCK");
 			}
-
 			if (deactivateRelay[currentRelay])
 			{
 				mqttPublishIo("lock" + String(currentRelay), "LOCKED");
-					#ifdef DEBUG
-									Serial.print("mili : ");
-									Serial.println(millis());
-									Serial.printf("deactivating relay %d now\n", currentRelay);
-					#endif
-				if (config.relayPin[currentRelay] != 255) digitalWrite(config.relayPin[currentRelay], !config.relayType[currentRelay]);
+				#ifdef DEBUG
+								Serial.print("mili : ");
+								Serial.println(millis());
+								Serial.printf("deactivating relay %d now\n", currentRelay);
+				#endif
+				if (config.relayPin[currentRelay] != 255) digitalWrite(config.relayPin[currentRelay], config.relayType[currentRelay]);
 				stateRelay[currentRelay] =  false;
 				deactivateRelay[currentRelay] = false;
+				mqttPublishRelayCmd(currentRelay+1,"LOCK");
 			}
 		}
 	}

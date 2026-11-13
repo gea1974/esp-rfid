@@ -78,7 +78,11 @@ var config = {
         "user": "",
         "pswd": "",
         "syncrate": 180,
-        "mqttlog": 0
+        "mqttlog": 0,
+        "cmdlock1": 0, "cmdunlock1": 0, "cmdtopic1": "", "cmdpaylock1": "", "cmdpayunlock1": "",
+        "cmdlock2": 0, "cmdunlock2": 0, "cmdtopic2": "", "cmdpaylock2": "", "cmdpayunlock2": "",
+        "cmdlock3": 0, "cmdunlock3": 0, "cmdtopic3": "", "cmdpaylock3": "", "cmdpayunlock3": "",
+        "cmdlock4": 0, "cmdunlock4": 0, "cmdtopic4": "", "cmdpaylock4": "", "cmdpayunlock4": ""
     },
     "ntp": {
         "server": "pool.ntp.org",
@@ -372,6 +376,15 @@ function savemqtt() {
     else{
         config.mqtt.mqttha = 0;
     } 
+
+    for (var i = 1; i <= 4; i++) {
+        config.mqtt["cmdlock" + i]      = document.getElementById("mqttcmdlock" + i).checked ? 1 : 0;
+        config.mqtt["cmdunlock" + i]    = document.getElementById("mqttcmdunlock" + i).checked ? 1 : 0;
+        config.mqtt["cmdtopic" + i]     = document.getElementById("mqttcmdtopic" + i).value;
+        config.mqtt["cmdpaylock" + i]   = document.getElementById("mqttcmdpaylock" + i).value;
+        config.mqtt["cmdpayunlock" + i] = document.getElementById("mqttcmdpayunlock" + i).value;
+    }
+
     uncommited();
 }
 
@@ -642,7 +655,13 @@ function listmqtt() {
     if (config.mqtt.mqttha === 1) {
       $("input[name=\"mqttha\"][value=\"1\"]").prop("checked", true);
     }
-    
+    for (var i = 1; i <= 4; i++) {
+        document.getElementById("mqttcmdlock" + i).checked    = (config.mqtt["cmdlock" + i] === 1);
+        document.getElementById("mqttcmdunlock" + i).checked  = (config.mqtt["cmdunlock" + i] === 1);
+        document.getElementById("mqttcmdtopic" + i).value     = config.mqtt["cmdtopic" + i] || "";
+        document.getElementById("mqttcmdpaylock" + i).value   = config.mqtt["cmdpaylock" + i] || "";
+        document.getElementById("mqttcmdpayunlock" + i).value = config.mqtt["cmdpayunlock" + i] || "";
+    }
 }
 
 function getFileList() {
@@ -1220,6 +1239,12 @@ function initLatestLogTable() {
               return "Access";
             } else if (value === 99) {
               return "Admin";
+            } else if (value === 10) {
+              return "Lock";
+            } else if (value === 11) {
+              return "Unlock";
+            } else if (value === 90) {
+              return "User";
             } else if (value === 0) {
               return "Disabled";
             } else if (value === 98) {
@@ -1284,7 +1309,7 @@ function initUserTable() {
               } else if (value === 10) {
                 return "Lock";
               } else if (value === 11) {
-                return "Unock";
+                return "Unlock";
               } else if (value === 99) {
                 return "Admin";
               } else if (value === 0) {
@@ -1306,7 +1331,7 @@ function initUserTable() {
               } else if (value === 10) {
                 return "Lock";
               } else if (value === 11) {
-                return "Unock";
+                return "Unlock";
               } else if (value === 99) {
                 return "Admin";
               } else if (value === 0) {
@@ -1325,10 +1350,10 @@ function initUserTable() {
                 return "Always";
               } else if (value === 90) {
                 return "User";
-//              } else if (value === 10) {
-//                return "Lock";
-//              } else if (value === 11) {
-//                return "Unock";
+              } else if (value === 10) {
+                return "Lock";
+              } else if (value === 11) {
+                return "Unlock";
               } else if (value === 99) {
                 return "Admin";
               } else if (value === 0) {
@@ -1347,10 +1372,10 @@ function initUserTable() {
                 return "Always";
               } else if (value === 90) {
                 return "User";
-//              } else if (value === 10) {
-//                return "Lock";
-//              } else if (value === 11) {
-//                return "Unock";
+              } else if (value === 10) {
+                return "Lock";
+              } else if (value === 11) {
+                return "Unlock";
               } else if (value === 99) {
                 return "Admin";
               } else if (value === 0) {
@@ -1732,6 +1757,7 @@ function changeRelayNumber(){
 
   updateRelayForm();
   updateUserModalForm();
+  updateMqttRelayForm();
 }
 
 function updateRelayForm() {
@@ -1799,6 +1825,7 @@ function updateUserModalForm(){
         var str = cloneObj.innerHTML;
         str=str.replace(/acctype/g, "acctype"+i);
         str=str.replace("Access Type Relay 1", "Access Type Relay "+i);
+        str=str.replace ("<option value=\"90\">User</option>", "");
         str=str.replace ("<option value=\"99\">Admin</option>", "");
         cloneObj.innerHTML=str;
         accParent[0].appendChild(cloneObj);
@@ -1813,6 +1840,15 @@ function updateUserModalForm(){
       }
     }
   }
+}
+
+function updateMqttRelayForm() {
+    for (var i = 2; i <= 4; i++) {
+        var group = document.getElementById("mqttcmdgroup" + i);
+        if (group) {
+            group.style.display = (i <= numRelays) ? "block" : "none";
+        }
+    }
 }
 
 function compareDestroy() {

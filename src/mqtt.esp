@@ -292,7 +292,7 @@ void mqttPublishDiscovery()
 void mqttPublishAvty()
 {
 	String mtopic(config.mqttTopic);
-	String avty_topic = mtopic + "/avty";
+	String avty_topic = mtopic + "/Connection";
 	String payloadString = "online";
 	mqttClient.publish(avty_topic.c_str(), 0, true, payloadString.c_str());
 #ifdef DEBUG
@@ -412,6 +412,32 @@ void mqttPublishIo(String const &io, String const &state)
 		Serial.println(state + " @ " + topic);
 #endif
 	}
+}
+
+void mqttPublishRelayCmd(int relais, const char *state)
+{
+    if (!config.mqttEnabled || !mqttClient.connected() || relais < 1 || relais > MAX_NUM_RELAYS)
+    {
+        return;
+    }
+
+    int idx = relais - 1;
+
+    if (config.mqttCmdTopic[idx] == NULL || strlen(config.mqttCmdTopic[idx]) == 0)
+    {
+        return;
+    }
+
+    if (strcmp(state, "LOCK") == 0 && config.mqttCmdLock[idx])
+    {
+        const char *payload = (config.mqttCmdPayLock[idx] != NULL) ? config.mqttCmdPayLock[idx] : "";
+        mqttClient.publish(config.mqttCmdTopic[idx], 0, false, payload);
+    }
+    else if (strcmp(state, "UNLOCK") == 0 && config.mqttCmdUnlock[idx])
+    {
+        const char *payload = (config.mqttCmdPayUnlock[idx] != NULL) ? config.mqttCmdPayUnlock[idx] : "";
+        mqttClient.publish(config.mqttCmdTopic[idx], 0, false, payload);
+    }
 }
 
 void onMqttPublish(uint16_t packetId)
@@ -794,7 +820,7 @@ void setupMqtt()
 	if (config.mqttHA)
 	{
 		String stopic(config.mqttTopic);
-		String topicString = stopic + "/avty";
+		String topicString = stopic + "/Connection";
 		String payloadString = "offline";
 		char *topicLWT = strdup(topicString.c_str());
 		char *payloadLWT = strdup(payloadString.c_str());

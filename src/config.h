@@ -33,6 +33,11 @@ struct Config {
     int mqttPort;
     char *mqttTopic = NULL;
     char *mqttUser = NULL;
+    bool mqttCmdLock[MAX_NUM_RELAYS] = {false};
+    bool mqttCmdUnlock[MAX_NUM_RELAYS] = {false};
+    char *mqttCmdTopic[MAX_NUM_RELAYS] = {NULL};
+    char *mqttCmdPayLock[MAX_NUM_RELAYS] = {NULL};
+    char *mqttCmdPayUnlock[MAX_NUM_RELAYS] = {NULL};
     bool networkHidden = false;
     char *ntpServer = NULL;
 	int ntpInterval = 0;

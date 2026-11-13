@@ -11,7 +11,7 @@ bool ICACHE_FLASH_ATTR loadConfiguration(Config &config)
 	size_t size = configFile.size();
 	std::unique_ptr<char[]> buf(new char[size]);
 	configFile.readBytes(buf.get(), size);
-	DynamicJsonDocument json(2048);
+	DynamicJsonDocument json(4096);
 	auto error = deserializeJson(json, buf.get(), size);
 	if (error)
 	{
@@ -347,6 +347,33 @@ bool ICACHE_FLASH_ATTR loadConfiguration(Config &config)
 		if (mqtt.containsKey("mqttha"))
 		{
 			config.mqttHA = mqtt["mqttha"] == 1;
+		}
+		for (int i = 0; i < MAX_NUM_RELAYS; i++)
+		{
+			String idx = String(i + 1);
+			if (mqtt.containsKey("cmdlock" + idx))
+			{
+				config.mqttCmdLock[i] = mqtt["cmdlock" + idx] == 1;
+			}
+			if (mqtt.containsKey("cmdunlock" + idx))
+			{
+				config.mqttCmdUnlock[i] = mqtt["cmdunlock" + idx] == 1;
+			}
+			if (mqtt.containsKey("cmdtopic" + idx))
+			{
+				String tStr = mqtt["cmdtopic" + idx];
+				config.mqttCmdTopic[i] = strdup(tStr.c_str());
+			}
+			if (mqtt.containsKey("cmdpaylock" + idx))
+			{
+				String plStr = mqtt["cmdpaylock" + idx];
+				config.mqttCmdPayLock[i] = strdup(plStr.c_str());
+			}
+			if (mqtt.containsKey("cmdpayunlock" + idx))
+			{
+				String puStr = mqtt["cmdpayunlock" + idx];
+				config.mqttCmdPayUnlock[i] = strdup(puStr.c_str());
+			}
 		}
 	}
 #ifdef DEBUG

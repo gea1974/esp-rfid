@@ -622,7 +622,6 @@
                 <label class="radio-inline"><input type="radio" value="0" name="mqttlog" checked>Disabled</label>
             </form>
         </div>
-        <br> 
     </div>
     <div class="row form-group">    
         <label class="col-xs-3">MQTT for Home Assistant<i style="margin-left: 10px;" class="glyphicon glyphicon-info-sign" aria-hidden="true" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="Enable MQTT topics and discovery for Home Assistant"></i></label>
@@ -632,8 +631,104 @@
                 <label class="radio-inline"><input type="radio" value="0" name="mqttha" checked>Disabled</label>
             </form>
         </div>
-        <br> 
     </div>
+
+    <br>
+<!-- RELAY 1 -->
+<hr>
+<div class="row form-group">   
+    <label class="col-xs-3">MQTT Command Relay 1<i style="margin-left: 10px;" class="glyphicon glyphicon-info-sign" aria-hidden="true" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="MQTT command for relay 1"></i></label>
+    <span class="col-xs-9 col-md-5">
+        <label class="checkbox-inline" for="mqttcmdlock1"><input type="checkbox" id="mqttcmdlock1"> Lock</label>
+        <label class="checkbox-inline" for="mqttcmdunlock1" style="margin-left: 15px;"><input type="checkbox" id="mqttcmdunlock1"> Unlock</label>
+    </span>
+</div>
+<div class="row form-group">
+    <label class="col-xs-3">Command Topic 1</label>
+    <span class="col-xs-9 col-md-5"><input type="text" class="form-control" id="mqttcmdtopic1" placeholder="haus/tuer1/command"></span>
+</div>
+<div class="row form-group">
+    <label class="col-xs-3">Payload Lock 1</label>
+    <span class="col-xs-9 col-md-5"><input type="text" class="form-control" id="mqttcmdpaylock1" placeholder="LOCK"></span>
+</div>
+<div class="row form-group">
+    <label class="col-xs-3">Payload Unlock 1</label>
+    <span class="col-xs-9 col-md-5"><input type="text" class="form-control" id="mqttcmdpayunlock1" placeholder="UNLOCK"></span>
+</div>
+
+<!-- RELAY 2 (will be shown if configured) -->
+<div id="mqttcmdgroup2">
+    <hr>
+    <div class="row form-group">   
+        <label class="col-xs-3">MQTT Command Relay 2<i style="margin-left: 10px;" class="glyphicon glyphicon-info-sign" aria-hidden="true" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="MQTT command for relay 2"></i></label>
+        <span class="col-xs-9 col-md-5">
+            <label class="checkbox-inline" for="mqttcmdlock2"><input type="checkbox" id="mqttcmdlock2"> Lock</label>
+            <label class="checkbox-inline" for="mqttcmdunlock2" style="margin-left: 15px;"><input type="checkbox" id="mqttcmdunlock2"> Unlock</label>
+        </span>
+    </div>
+    <div class="row form-group">
+        <label class="col-xs-3">Command Topic 2</label>
+        <span class="col-xs-9 col-md-5"><input type="text" class="form-control" id="mqttcmdtopic2" placeholder="haus/tuer2/command"></span>
+    </div>
+    <div class="row form-group">
+        <label class="col-xs-3">Payload Lock 2</label>
+        <span class="col-xs-9 col-md-5"><input type="text" class="form-control" id="mqttcmdpaylock2" placeholder="LOCK"></span>
+    </div>
+    <div class="row form-group">
+        <label class="col-xs-3">Payload Unlock 2</label>
+        <span class="col-xs-9 col-md-5"><input type="text" class="form-control" id="mqttcmdpayunlock2" placeholder="UNLOCK"></span>
+    </div>
+</div>
+
+<!-- RELAY 3 (will be shown if configured) -->
+<div id="mqttcmdgroup3">
+    <hr>
+    <div class="row form-group">   
+        <label class="col-xs-3">MQTT Command Relay 3<i style="margin-left: 10px;" class="glyphicon glyphicon-info-sign" aria-hidden="true" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="MQTT command for relay 3"></i></label>
+        <span class="col-xs-9 col-md-5">
+            <label class="checkbox-inline" for="mqttcmdlock3"><input type="checkbox" id="mqttcmdlock3"> Lock</label>
+            <label class="checkbox-inline" for="mqttcmdunlock3" style="margin-left: 15px;"><input type="checkbox" id="mqttcmdunlock3"> Unlock</label>
+        </span>
+    </div>
+    <div class="row form-group">
+        <label class="col-xs-3">Command Topic 3</label>
+        <span class="col-xs-9 col-md-5"><input type="text" class="form-control" id="mqttcmdtopic3" placeholder="haus/tuer3/command"></span>
+    </div>
+    <div class="row form-group">
+        <label class="col-xs-3">Payload Lock 3</label>
+        <span class="col-xs-9 col-md-5"><input type="text" class="form-control" id="mqttcmdpaylock3" placeholder="LOCK"></span>
+    </div>
+    <div class="row form-group">
+        <label class="col-xs-3">Payload Unlock 3</label>
+        <span class="col-xs-9 col-md-5"><input type="text" class="form-control" id="mqttcmdpayunlock3" placeholder="UNLOCK"></span>
+    </div>
+</div>
+
+<!-- RELAY 4 (will be shown if configured) -->
+<div id="mqttcmdgroup4">
+    <hr>
+    <div class="row form-group">   
+        <label class="col-xs-3">MQTT Command Relay 4<i style="margin-left: 10px;" class="glyphicon glyphicon-info-sign" aria-hidden="true" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="MQTT command for relay 4"></i></label>
+        <span class="col-xs-9 col-md-5">
+            <label class="checkbox-inline" for="mqttcmdlock4"><input type="checkbox" id="mqttcmdlock4"> Lock</label>
+            <label class="checkbox-inline" for="mqttcmdunlock4" style="margin-left: 15px;"><input type="checkbox" id="mqttcmdunlock4"> Unlock</label>
+        </span>
+    </div>
+    <div class="row form-group">
+        <label class="col-xs-3">Command Topic 4</label>
+        <span class="col-xs-9 col-md-5"><input type="text" class="form-control" id="mqttcmdtopic4" placeholder="haus/tuer4/command"></span>
+    </div>
+    <div class="row form-group">
+        <label class="col-xs-3">Payload Lock 4</label>
+        <span class="col-xs-9 col-md-5"><input type="text" class="form-control" id="mqttcmdpaylock4" placeholder="LOCK"></span>
+    </div>
+    <div class="row form-group">
+        <label class="col-xs-3">Payload Unlock 4</label>
+        <span class="col-xs-9 col-md-5"><input type="text" class="form-control" id="mqttcmdpayunlock4" placeholder="UNLOCK"></span>
+    </div>
+</div>
+
+    <br>
     <div class="row form-group">    
         <div class="col-xs-9">
             <button onclick="savemqtt()" class="btn btn-primary btn-sm pull-left">Save</button>
