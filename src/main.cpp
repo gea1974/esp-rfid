@@ -79,11 +79,17 @@ Bounce openLockButton;
 AsyncWebServer server(80);
 AsyncWebSocket ws("/ws");
 
-#define LEDoff HIGH
-#define LEDon LOW
+#define WifiLEDoff (config.wifipininversed ? HIGH : LOW)
+#define WifiLEDon (config.wifipininversed ? LOW : HIGH)
 
-#define BEEPERoff HIGH
-#define BEEPERon LOW
+#define WaitingLEDoff  (config.ledwaitingpininversed ? HIGH : LOW)
+#define WaitingLEDon (config.ledwaitingpininversed ? LOW : HIGH)
+
+#define AccessDeniedLEDoff  (config.accessdeniedpininversed ? HIGH : LOW)
+#define AccessDeniedLEDon (config.accessdeniedpininversed ? LOW : HIGH)
+
+#define BEEPERoff (config.beeperpininversed ? HIGH : LOW)
+#define BEEPERon (config.beeperpininversed ? LOW : HIGH)
 
 // Variables for whole scope
 unsigned long cooldown = 0;

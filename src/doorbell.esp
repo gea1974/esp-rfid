@@ -7,7 +7,8 @@ void doorbellStatus()
             return;
       }
       // if this changes and if mqtt and mqtt logging enabled, push the message, also to a web socket!
-      bool doorbellActive = (digitalRead(config.doorbellpin) == HIGH) ^ config.doorbellpininversed;
+      
+      bool doorbellActive = (digitalRead(config.doorbellpin) == (config.doorbellpininversed ? LOW : HIGH));
 
       if (doorbellActive && (lastDoorbellState == 0))
       {

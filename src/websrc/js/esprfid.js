@@ -38,17 +38,22 @@ var config = {
         "sspin": 0,
         "rfidgain": 32,
         "wifipin": 255,
+        "wifipininversed": 0,
         "rtype": 1,
         "ltype": 0,
         "rpin": 4,
         "rtime": 400,
         "doorname": "Door",
         "beeperpin" : 255,
+        "beeperpininversed": 0,
         "ledwaitingpin" : 255,
+        "ledwaitingpininversed": 0,
         "openlockpin": 255,
+        "openlockpininversed": 0,
         "doorbellpin": 255,
         "doorbellpininversed": 0,
         "accessdeniedpin": 255,
+        "accessdeniedpininversed": 0,
         "useridstoragemode": "hexadecimal",
         "requirepincodeafterrfid": 1,
         "allowpincodeonly": 0,
@@ -208,18 +213,24 @@ function listhardware() {
   document.getElementById("typerly").value = config.hardware.rtype;
   document.getElementById("delay").value = config.hardware.rtime;
   document.getElementById("wifipin").value = config.hardware.wifipin;
+  document.getElementById("wifipininversed").checked = config.hardware.wifipin;
   document.getElementById("doorstatpin").value = config.hardware.doorstatpin;
+  document.getElementById("doorstatpininversed").checked = config.hardware.doorstatpininversed;
   document.getElementById("maxOpenDoorTime").value = config.hardware.maxOpenDoorTime;
   document.getElementById("doorbellpin").value = config.hardware.doorbellpin;
   document.getElementById("doorbellpininversed").checked = config.hardware.doorbellpininversed;
   document.getElementById("openlockpin").value = config.hardware.openlockpin;
+  document.getElementById("openlockpininversed").checked = config.hardware.openlockpininversed;
   document.getElementById("accessdeniedpin").value = config.hardware.accessdeniedpin;
+  document.getElementById("accessdeniedpininversed").checked = config.hardware.accessdeniedpininversed;
   document.getElementById("useridstoragemode").value = config.hardware.useridstoragemode;
   document.getElementById("requirepincodeafterrfid").checked = config.hardware.requirepincodeafterrfid;
   document.getElementById("allowpincodeonly").checked = config.hardware.allowpincodeonly;
   document.getElementById("removeparitybits").checked = config.hardware.removeparitybits;
   document.getElementById("ledwaitingpin").value = config.hardware.ledwaitingpin;
+  document.getElementById("ledwaitingpininversed").checked = config.hardware.ledwaitingpininversed;
   document.getElementById("beeperpin").value = config.hardware.beeperpin;
+  document.getElementById("beeperpininversed").checked = config.hardware.beeperpininversed;
   document.getElementById("readertype").value = config.hardware.readertype;
   document.getElementById("wg0pin").value = config.hardware.wgd0pin;
   document.getElementById("wg1pin").value = config.hardware.wgd1pin;
@@ -288,14 +299,20 @@ function savehardware() {
   config.hardware.rpin = parseInt(document.getElementById("gpiorly").value);
   config.hardware.rtime = parseInt(document.getElementById("delay").value);
   config.hardware.wifipin = parseInt(document.getElementById("wifipin").value);
+  config.hardware.wifipininversed = document.getElementById("wifipininversed").checked;
   config.hardware.doorstatpin = parseInt(document.getElementById("doorstatpin").value);
+  config.hardware.doorstatpininversed = document.getElementById("doorstatpininversed").checked;
   config.hardware.maxOpenDoorTime = parseInt(document.getElementById("maxOpenDoorTime").value);
   config.hardware.doorbellpin = parseInt(document.getElementById("doorbellpin").value);
   config.hardware.doorbellpininversed = document.getElementById("doorbellpininversed").checked;
   config.hardware.openlockpin = parseInt(document.getElementById("openlockpin").value);
+  config.hardware.openlockpininversed = document.getElementById("openlockpininversed").checked;
   config.hardware.accessdeniedpin = parseInt(document.getElementById("accessdeniedpin").value);
+  config.hardware.accessdeniedpininversed = document.getElementById("accessdeniedpininversed").checked;
   config.hardware.beeperpin = parseInt(document.getElementById("beeperpin").value);
+  config.hardware.beeperpininversed = document.getElementById("beeperpininversed").checked;
   config.hardware.ledwaitingpin = parseInt(document.getElementById("ledwaitingpin").value);
+  config.hardware.ledwaitingpininversed = document.getElementById("ledwaitingpininversed").checked;
   config.hardware.doorname = document.getElementById("doorname").value;
   config.hardware["numrelays"] = numRelays; 
 

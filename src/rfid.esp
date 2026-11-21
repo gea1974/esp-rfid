@@ -294,20 +294,64 @@ void pinCodeRead()
 			}
 			if(wg.getCode() == WIEGAND_ENT) // enter, process pincode
 			{
-				pinCode = currentInput;
+#ifdef DEBUG
+				Serial.println("Stop capture keycode . . .");
+#endif
 				if (config.pinCodeOnly && rfidState == waitingRfid)
 				{
-					uid = pinCode;
+					uid = currentInput;
 					rfidState = cardSwiped;
+#ifdef DEBUG
+					Serial.print(F("[ INFO ] PICC's uid: "));
+					Serial.println(currentInput);
+#endif			
+					File f = SPIFFS.open("/P/" + uid, "r");
+					// user exists, we should wait for pincode
+					if (f)
+					{
+						size_t size = f.size();
+						std::unique_ptr<char[]> buf(new char[size]);
+						f.readBytes(buf.get(), size);
+						f.close();
+						DynamicJsonDocument json(512);
+						auto error = deserializeJson(json, buf.get(), size);
+						if (error)
+						{
+							processingState = notValid;
+#ifdef DEBUG
+							Serial.println("");
+							Serial.println(F("[ WARN ] Failed to parse User Data"));
+#endif
+							return;
+						}		
+
+						if (config.pinCodeRequested)
+						{
+							if(json["pincode"] == "")
+							{
+								rfidState = pinCodeEntered;
+							} else
+							{
+								keyTimer = millis();
+								ledWaitingOn();
+							}
+						}
+					} else
+					{
+						cooldown = millis() + COOLDOWN_MILIS;
+						rfidState = waitingRfid;
+						processingState = unknown;
+					}
 				} else
 				{
 					rfidState = pinCodeEntered;
-				}
+					pinCode = currentInput;
 #ifdef DEBUG
-				Serial.println("Stop capture keycode . . .");
-				Serial.print(F("[ INFO ] PICC's pin code: "));
-				Serial.println(currentInput);
+					Serial.print(F("[ INFO ] PICC's pin code: "));
+					Serial.println(currentInput);
 #endif
+				}
+
 				currentInput = "";
 				keyTimer = 0;
 				cooldown = millis() + COOLDOWN_MILIS;
@@ -383,6 +427,10 @@ void rfidProcess()
 #endif
 		return;
 	}
+	/*
+	 *  Get account username from user's data
+	 */
+	username = json["user"].as<String>();
 
 	// if the pin code is wrong we deny access
 	// pinCode is equal to uid if we allow pin code only access
@@ -396,10 +444,9 @@ void rfidProcess()
 	}
 
 	/*
-	 *  Get account type (for FIRST relay only) and username from user's data
+	 *  Get account type (for FIRST relay only) from user's data
 	 */
 	accountType = json["acctype"];
-	username = json["user"].as<String>();
 
 #ifdef DEBUG
 	Serial.println(" = known PICC");

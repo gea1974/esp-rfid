@@ -1,6 +1,7 @@
 struct Config {
     int relayPin[MAX_NUM_RELAYS];
     uint8_t accessdeniedpin = 255;
+    bool accessdeniedpininversed = true;
     bool accessPointMode = false;
     IPAddress accessPointIp;
     IPAddress accessPointSubnetIp;
@@ -9,6 +10,7 @@ struct Config {
     unsigned long beeperInterval = 0;
     unsigned long beeperOffTime = 0;
     uint8_t beeperpin = 255;
+    bool beeperpininversed = true;
     byte bssid[6] = {0, 0, 0, 0, 0, 0};
     char *deviceHostname = NULL;
     bool dhcpEnabled = true;
@@ -17,11 +19,13 @@ struct Config {
     bool doorbellpininversed = false;
     char *doorName[MAX_NUM_RELAYS];
     uint8_t doorstatpin = 255;
+    bool doorstatpininversed = false;
     bool fallbackMode = false;
     IPAddress gatewayIp;
     char *httpPass = NULL;
     IPAddress ipAddress;
     uint8_t ledwaitingpin = 255;
+    bool ledwaitingpininversed = false;
     int lockType[MAX_NUM_RELAYS];
     uint8_t maxOpenDoorTime = 0;
     bool mqttAutoTopic = false;
@@ -45,6 +49,7 @@ struct Config {
     int numRelays = 1;
     char *openingHours[7];
     uint8_t openlockpin = 255;
+    bool openlockpininversed = false;
     bool pinCodeRequested = false;
     bool pinCodeOnly = false;
     bool wiegandReadHex = true;
@@ -58,6 +63,7 @@ struct Config {
     const char *wifiApIp = NULL;
     const char *wifiApSubnet = NULL;
 	uint8_t wifipin = 255;
+    bool wifipininversed = true;
     const char *wifiPassword = NULL;
     unsigned long wifiTimeout = 0;
 };

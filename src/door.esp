@@ -9,8 +9,10 @@ void doorStatus(/* arguments */)
     return;
   }
 
+    bool doorstate = (digitalRead(config.doorstatpin) == (config.doorstatpininversed ? LOW : HIGH));
+
   // if this changes and if mqtt and mqtt logging enabled, push the message, also to a web socket!
-  if ((digitalRead(config.doorstatpin) == HIGH) && (lastDoorState == 0))
+  if (doorstate && (lastDoorState == 0))
   {
     writeEvent("INFO", "door", "Door Closed", "");
     if (lastTamperState == 1)
@@ -22,7 +24,7 @@ void doorStatus(/* arguments */)
     lastDoorState = 1;
   }
 
-  if ((digitalRead(config.doorstatpin) == LOW) && (lastDoorState == 1))
+  if (!doorstate && (lastDoorState == 1))
   {
     writeEvent("INFO", "door", "Door Open", "");
     if (digitalRead(config.relayPin[0]) == !config.relayType[0])

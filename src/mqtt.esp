@@ -783,11 +783,11 @@ void onMqttConnect(bool sessionPresent)
 		mqttPublishAvty();
 		if (config.doorstatpin != 255)
 		{
-			mqttPublishIo("door", digitalRead(config.doorstatpin) == HIGH ? "OFF" : "ON");
+			mqttPublishIo("door", digitalRead(config.doorstatpin) == (config.doorstatpininversed ? LOW : HIGH) ? "OFF" : "ON");
 		}
 		if (config.doorbellpin != 255)
 		{
-			mqttPublishIo("doorbell", digitalRead(config.doorbellpin) == HIGH ? "ON" : "OFF");
+			mqttPublishIo("doorbell", digitalRead(config.doorbellpin) == (config.doorbellpininversed ? LOW : HIGH) ? "ON" : "OFF");
 		}
 		for (int i = 0; i < config.numRelays; i++)
 		{
