@@ -15,7 +15,8 @@ enum RfidStates
 {
 	waitingRfid,
 	cardSwiped,
-	pinCodeEntered
+	pinCodeEntered,
+	unknownState
 };
 enum RfidProcessingStates
 {
@@ -30,6 +31,7 @@ enum RfidProcessingStates
 };
 
 RfidStates rfidState = waitingRfid;
+RfidStates lastRfidState = 	unknownState; // Speichert den letzten Zustand
 RfidProcessingStates processingState = waitingProcessing;
 
 void loadWiegandData()
@@ -458,7 +460,7 @@ void rfidProcess()
 	Serial.print("'");
 #endif
 
-	if ( (accountType == ACCESS_GRANTED) || (accountType == ACCESS_USER) || (accountType == ACCESS_LOCK) || (accountType == ACCESS_LOCK) )
+	if ( (accountType == ACCESS_GRANTED) || (accountType == ACCESS_USER) || (accountType == ACCESS_LOCK) || (accountType == ACCESS_UNLOCK) )
 	{
 		/*
 		 *  Normal user - relay but no admin access
@@ -641,6 +643,28 @@ void cleanRfidLoop()
 	}
 }
 
+void rfidStateSend()
+{
+	if (rfidState != lastRfidState) {	
+		lastRfidState = rfidState;
+		String stateText = "";
+		switch (rfidState) {
+		case waitingRfid:
+			stateText = "WAITING";
+			break;
+		case cardSwiped:
+			stateText = "CARD";
+			break;
+		case pinCodeEntered:
+			stateText = "PIN";
+			break;
+
+		}
+		mqttPublishState(stateText);
+	}
+}
+
+
 void rfidLoop()
 {
 	rfidPrepareRead();
@@ -648,6 +672,7 @@ void rfidLoop()
 	pinCodeRead();
 	rfidProcess();
 	rfidOutsideMessaging();
+	rfidStateSend();
 	cleanRfidLoop();
 }
 

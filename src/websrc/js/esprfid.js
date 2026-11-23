@@ -205,6 +205,8 @@ function handleLock(xnum) {
     document.getElementById("activateTimeForm"+xstr).style.display = "block";
   } else if (lType === 1) {
     document.getElementById("activateTimeForm"+xstr).style.display = "none";
+  } else if (lType === 2) {
+    document.getElementById("activateTimeForm"+xstr).style.display = "none";
   }
 }
 

@@ -322,10 +322,10 @@ void mqttPublishAccess(time_t accesstime, String const &isknown, String const &t
 	root["uid"] = uid;
 	root["pincode"] = pincode;
 	root["username"] = user;
-	root["access"] = type;
 
 	root["time"] = accesstime;
 	
+	root["access"] = type;
 	root["doorName"] = config.doorName[0];
 
 	if (!config.mqttHA)
@@ -344,12 +344,19 @@ void mqttPublishAccess(time_t accesstime, String const &isknown, String const &t
 void mqttPublishAccess(time_t accesstime, String const &isknown, int types[MAX_NUM_RELAYS], String const &user, String const &uid, String const &pincode)
 {
 	DynamicJsonDocument root(512);
-	JsonArray access = root.createNestedArray("access");
-	JsonArray doorNames = root.createNestedArray("doorName");
 	if (config.mqttEvents)
 	{
 		root["cmd"] = "log";
 	}
+
+	root["uid"] = uid;
+	root["pincode"] = pincode;
+	root["username"] = user;
+
+	root["time"] = accesstime;
+
+	JsonArray access = root.createNestedArray("access");
+	JsonArray doorNames = root.createNestedArray("doorName");
 
 	for (int i=0; i<config.numRelays; i++) {
 		switch (types[i])
@@ -378,12 +385,6 @@ void mqttPublishAccess(time_t accesstime, String const &isknown, int types[MAX_N
 		}
 		doorNames.add(config.doorName[i]);
 	}
-
-	root["uid"] = uid;
-	root["pincode"] = pincode;
-	root["username"] = user;
-
-	root["time"] = accesstime;
 
 	if (!config.mqttHA)
 	{
@@ -414,6 +415,22 @@ void mqttPublishIo(String const &io, String const &state)
 	}
 }
 
+void mqttPublishState(String const &state)
+{
+	if (config.mqttHA && config.mqttEnabled && mqttClient.connected())
+	{
+		String mtopic(config.mqttTopic);
+		String topic = mtopic + "/state";
+
+		mqttClient.publish(topic.c_str(), 0, false, state.c_str());
+
+#ifdef DEBUG
+		Serial.print("[ INFO ] Mqtt Publish: ");
+		Serial.println(state + " @ " + topic);
+#endif
+	}
+}
+
 void mqttPublishRelayCmd(int relais, const char *state)
 {
     if (!config.mqttEnabled || !mqttClient.connected() || relais < 1 || relais > MAX_NUM_RELAYS)
@@ -427,16 +444,24 @@ void mqttPublishRelayCmd(int relais, const char *state)
     {
         return;
     }
-
+	String topic = config.mqttCmdTopic[idx];
     if (strcmp(state, "LOCK") == 0 && config.mqttCmdLock[idx])
     {
-        const char *payload = (config.mqttCmdPayLock[idx] != NULL) ? config.mqttCmdPayLock[idx] : "";
-        mqttClient.publish(config.mqttCmdTopic[idx], 0, false, payload);
+        String payload = (config.mqttCmdPayLock[idx] != NULL) ? config.mqttCmdPayLock[idx] : "";
+        mqttClient.publish(topic.c_str(), 0, false, payload.c_str());
+#ifdef DEBUG
+		Serial.print("[ INFO ] Mqtt Publish: ");
+		Serial.println(payload + " @ " + topic);
+#endif
     }
     else if (strcmp(state, "UNLOCK") == 0 && config.mqttCmdUnlock[idx])
     {
-        const char *payload = (config.mqttCmdPayUnlock[idx] != NULL) ? config.mqttCmdPayUnlock[idx] : "";
-        mqttClient.publish(config.mqttCmdTopic[idx], 0, false, payload);
+        String payload = (config.mqttCmdPayUnlock[idx] != NULL) ? config.mqttCmdPayUnlock[idx] : "";
+        mqttClient.publish(topic.c_str(), 0, false, payload.c_str());
+#ifdef DEBUG
+		Serial.print("[ INFO ] Mqtt Publish: ");
+		Serial.println(payload + " @ " + topic);
+#endif
     }
 }
 
