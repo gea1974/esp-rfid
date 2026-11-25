@@ -22,7 +22,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
-#define VERSION "GEA-2.0.1"
+#define VERSION "GEA-2.1.0"
 
 #include "Arduino.h"
 #include <ESP8266WiFi.h>
@@ -99,6 +99,8 @@ bool doEnableWifi = false;
 bool formatreq = false;
 const char *httpUsername = "admin";
 unsigned long keyTimer = 0;
+unsigned long accessTimer = 0;
+unsigned long accessTimeout =0;
 uint8_t lastDoorbellState = 0;
 uint8_t lastDoorState = 0;
 uint8_t lastTamperState = 0;
@@ -202,7 +204,7 @@ void loop()
 	}
 
 	ledWifiStatus();
-	ledAccessDeniedOff();
+//	ledAccessDeniedOff();
 	beeperBeep();
 	doorStatus();
 	doorbellStatus();

@@ -5,7 +5,7 @@ void ledWaitingOn()
 	if (config.ledwaitingpin != 255)
 	{
 		digitalWrite(config.ledwaitingpin, WaitingLEDon);
-#ifdef DEBUG
+#ifdef DEBUG_LED
 		Serial.println("LED waiting ON");
 #endif
 	}
@@ -16,7 +16,7 @@ void ledWaitingOff()
 	if (config.ledwaitingpin != 255)
 	{
 		digitalWrite(config.ledwaitingpin, WaitingLEDoff);
-#ifdef DEBUG
+#ifdef DEBUG_LED
 		Serial.println("LED waiting OFF");
 #endif
 	}
@@ -27,7 +27,7 @@ void ledWifiOn()
 	if (config.wifipin != 255)
 	{
 		digitalWrite(config.wifipin, WifiLEDon);
-#ifdef DEBUG
+#ifdef DEBUG_LED
 		Serial.println("LED WiFi ON");
 #endif
 	}
@@ -38,7 +38,7 @@ void ledWifiOff()
 	if (config.wifipin != 255)
 	{
 		digitalWrite(config.wifipin, WifiLEDoff);
-#ifdef DEBUG
+#ifdef DEBUG_LED
 		Serial.println("LED WiFi OFF");
 #endif
 	}
@@ -70,7 +70,7 @@ void ledAccessDeniedOff()
 	if (config.accessdeniedpin != 255 && currentMillis > accessdeniedOffTime && digitalRead(config.accessdeniedpin) == AccessDeniedLEDon)
 	{
 		digitalWrite(config.accessdeniedpin, AccessDeniedLEDoff);
-#ifdef DEBUG
+#ifdef DEBUG_LED
 		Serial.println("LED access denied OFF");
 #endif
 	}
@@ -82,7 +82,7 @@ void ledAccessDeniedOn()
 	{
 		accessdeniedOffTime = currentMillis + 1000;
 		digitalWrite(config.accessdeniedpin, AccessDeniedLEDon);
-#ifdef DEBUG
+#ifdef DEBUG_LED
 		Serial.println("LED access denied ON");
 #endif
 	}

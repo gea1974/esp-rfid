@@ -12,6 +12,9 @@
 
 #define COOLDOWN_MILIS 2000          // Milliseconds the RFID reader will be blocked between inputs
 #define KEYBOARD_TIMEOUT_MILIS 10000 // timeout in milis for keyboard input
+#define DENIED_TIMEOUT 5000
+#define ACCESS_TIMEOUT 2000
+#define DENIED_COUNT_MAX 6
 
 // user related numbers
 
